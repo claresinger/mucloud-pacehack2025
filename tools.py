@@ -1,3 +1,6 @@
+import numpy as np
+import xarray as xr
+
 def time_from_attr(ds):
     """Set the time attribute as a dataset variable
     Args:
