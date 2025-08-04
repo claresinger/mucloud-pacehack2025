@@ -1,5 +1,6 @@
 import numpy as np
 import xarray as xr
+import matplotlib as plt
 
 def time_from_attr(ds):
     """Set the time attribute as a dataset variable
@@ -24,3 +25,24 @@ def open_L2_CLOUD_GPC(path,N=-50,E=-120,S=-60,W=-170):
     mask = np.logical_and(lat_mask,lon_mask)
     ds = ds.where(mask,drop=True)
     return(ds)
+
+def plot_hist(cdnc,lwp):
+    
+    fig,ax = plt.subplots()
+    
+    xbins = np.logspace(0,2.5,50) # <- make a range from 10**xmin to 10**xmax
+    #print(xbins)
+    ybins = np.logspace(1,2.5,50) # <- make a range from 10**ymin to 10**ymax
+    #print(xbins,ybins)
+    h,xedge,yedge,im = ax.hist2d(cdnc,lwp,bins=(xbins,ybins))
+    
+    h_norm = h/h.sum(axis=1,keepdims=True)
+    h_norm=np.transpose(h_norm)
+    
+    im = ax.pcolormesh(xedge,yedge,h_norm,cmap='turbo',vmax=0.055)
+    fig.colorbar(im,shrink=0.75)
+    ax.set_xlabel('CDNC',fontsize=15)
+    ax.set_ylabel(r'LWP',fontsize=15)
+    ax.set_yscale('log')
+    ax.set_xscale('log')
+    plt.show()
