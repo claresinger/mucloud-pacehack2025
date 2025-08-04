@@ -15,6 +15,7 @@ def time_from_attr(ds):
     return ds
 
 def open_L2_CLOUD_GPC(path,N=-50,E=-120,S=-60,W=-170):
+    
     dt = xr.open_datatree(path)
     ds = xr.merge(dt.to_dict().values())
     ds = time_from_attr(ds)
@@ -27,7 +28,9 @@ def open_L2_CLOUD_GPC(path,N=-50,E=-120,S=-60,W=-170):
     return(ds)
 
 def plot_hist(cdnc,lwp):
-    
+    '''
+    Plots a histogram as in Goren et al 2025 given cloud droplet number concentration and liquid water path. 
+    '''
     fig,ax = plt.subplots()
     
     xbins = np.logspace(0,2.5,50) # <- make a range from 10**xmin to 10**xmax
