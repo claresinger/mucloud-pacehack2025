@@ -1,6 +1,6 @@
 import numpy as np
 import xarray as xr
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 def time_from_attr(ds):
     """Set the time attribute as a dataset variable
