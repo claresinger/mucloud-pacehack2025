@@ -31,7 +31,7 @@ class Cw_LUT(object):
 def Nd_from_tau_re(tau,re,Cw=0.0020, fad=0.7, k=0.8,Qe = 2.0):
     """
     tau: cloud optical thickness [unitless]
-    re: cloud effective radius [um]
+    re: cloud effective radius [µm]
     fad : adiabaticity of cloud [unitless]
     Cw:   lapse rate of water content [g/m^4]
     k:    disperson const rv^3 = k * re^3
