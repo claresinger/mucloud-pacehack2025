@@ -11,10 +11,27 @@ def path_to_gridded_ds(path, bbox, ds_match):
     dt = xr.open_datatree(path)
     ds = xr.merge(dt.to_dict().values())
     ds = ds.set_coords(("longitude", "latitude"))
-    ds_src = ds[['cloud_bow_droplet_effective_radius',
-                 'cloud_bow_droplet_effective_variance',
-                 'cloud_bow_droplet_number_concentration_adiabatic',
-                 'cloud_bow_liquid_water_path']]
+    ds["cloud_liquid_index_mask"] = (ds.cloud_liquid_index > 0.3).astype(float)
+    # ds_filter = ds.where(
+    #     (ds.cloud_optical_thickness > 5) # filter on tau > 5
+    #     & (ds.cloud_bow_droplet_effective_radius > 5) # filter on re > 5
+    # )
+    # ds_filter = ds.where((ds.cloud_optical_thickness > 0))
+    ds_src = ds[[
+                'cloud_bow_droplet_effective_radius',
+                'cloud_bow_droplet_effective_variance',
+                'cloud_bow_droplet_number_concentration_adiabatic',
+                'cloud_bow_liquid_water_path',
+                'cloud_rft_droplet_effective_radius_mode_0',
+                'cloud_rft_droplet_effective_radius_mode_1',
+                'cloud_rft_droplet_effective_variance_mode_0',
+                'cloud_rft_droplet_effective_variance_mode_1',
+                'cloud_rft_mode_fraction_0',
+                'cloud_rft_mode_fraction_1',
+                'cloud_top_altitude',
+                'cloud_top_temperature',
+                'cloud_top_pressure',
+                'cloud_liquid_index_mask']]
     ds_src = ds_src.rio.set_spatial_dims("bins_across_track", "bins_along_track")
     ds_src = ds_src.rio.write_crs("epsg:4326")
 
